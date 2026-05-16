@@ -52,7 +52,7 @@ jobs:
 
       # ── Entregar informe a las 8:30 PM Honduras (02:30 UTC) ───────────────
       - name: Ejecutar deliver.py (8:30 PM Honduras)
-        if: github.event.schedule == '30 2 * * *' || github.event_name == 'workflow_dispatch'
+        if: ${{ github.event.schedule == '30 2 * * *' || github.event_name == 'workflow_dispatch' }}
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GMAIL_USER: ${{ secrets.GMAIL_USER }}
