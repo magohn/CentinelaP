@@ -1,9 +1,10 @@
-name: CENTINELA — Entrega Informe
+name: CENTINELA — Entrega Manual
+
+# Este workflow es SOLO para pruebas manuales.
+# La entrega automática de las 8:30 PM Honduras ya está
+# integrada dentro de collect.yml (cron 30 2 * * *).
 
 on:
-  schedule:
-    # 8:30 PM Honduras (UTC-6) = 2:30 AM UTC
-    - cron: '30 2 * * *'
   workflow_dispatch:
 
 jobs:
@@ -48,10 +49,3 @@ jobs:
           path: reportes/**/*.html
           retention-days: 7
           if-no-files-found: ignore
-
-      - name: Guardar base de datos
-        uses: actions/cache/save@v4
-        if: always()
-        with:
-          path: sentinela.db
-          key: centinela-db-${{ github.run_id }}-${{ github.run_attempt }}
