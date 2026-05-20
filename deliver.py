@@ -376,14 +376,15 @@ def send_email(html, subject):
     msg = MIMEMultipart("alternative")
     msg["Subject"] = subject
     msg["From"]    = GMAIL_USER
+    msg["To"]      = GMAIL_USER  # Solo se muestra el remitente
     recipients = REPORT_EMAIL if isinstance(REPORT_EMAIL, list) else [REPORT_EMAIL]
-    msg["To"]   = ", ".join(recipients)
+    msg["Bcc"]  = ", ".join(recipients)
     msg.attach(MIMEText(html, "html"))
 
     with smtplib.SMTP_SSL("smtp.gmail.com", 465) as s:
         s.login(GMAIL_USER, GMAIL_APP_PASSWORD)
         s.sendmail(GMAIL_USER, recipients, msg.as_string())
-    log(f"  ✓ Email enviado a {', '.join(recipients)}")
+    log(f"  ✓ Email enviado (BCC) a {len(recipients)} destinatarios")
 
 
 # ── Main ─────────────────────────────────────────────────────────────────────
