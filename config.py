@@ -271,7 +271,8 @@ else:
 REPORT_EMAIL = [
     "max.gonzaleshn@gmail.com",
     "kodath@gmail.com",
-    "orlet24@hotmail.com",
+    "olret24@hotmail.com",
+    "alefrico@gmail.com",
 ]
 SENDER_NAME  = "🛡️ CENTINELA"
 
