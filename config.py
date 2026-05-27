@@ -200,18 +200,14 @@ NITTER_INSTANCES = [
 # ── Palabras clave de crisis (alerta inmediata) ──────────────────────────────
 
 CRISIS_KEYWORDS = [
-    # 🚨 Eventos críticos
-    "renuncia", "golpe de Estado", "fraude electoral", "Estado de emergencia",
-    "toque de queda", "destitución", "golpe",
+    # 🚨 Ruptura institucional
+    "golpe de Estado", "toque de queda", "Estado de emergencia",
 
-    # ⚖️ Conflictos judiciales/políticos
-    "fraude", "escándalo", "acusación", "detención",
+    # 🏛️ Crisis de gobierno
+    "renuncia", "destitución", "impeachment", "vacancia",
 
-    # 📢 Movilización social
-    "manifestación", "protesta", "crisis",
-
-    # 🇭🇳 Contexto Honduras específico
-    "Papi", "La Racha",
+    # 📢 Movilización masiva
+    "marcha nacional", "paro nacional", "bloqueo de carreteras",
 ]
 
 # ── Palabras clave de monitoreo general ─────────────────────────────────────

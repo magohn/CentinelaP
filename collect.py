@@ -388,15 +388,17 @@ def send_immediate_alert(alerts):
     </body></html>"""
 
     try:
+        recipients = REPORT_EMAIL if isinstance(REPORT_EMAIL, list) else [REPORT_EMAIL]
         msg = MIMEMultipart("alternative")
         msg["Subject"] = f"⚠️ SENTINELA ALERTA — {datetime.now().strftime('%d/%m %H:%M')}"
         msg["From"]    = GMAIL_USER
-        msg["To"]      = REPORT_EMAIL
+        msg["To"]      = GMAIL_USER
+        msg["Bcc"]     = ", ".join(recipients)
         msg.attach(MIMEText(html, "html"))
         with smtplib.SMTP_SSL("smtp.gmail.com", 465) as s:
             s.login(GMAIL_USER, GMAIL_APP_PASSWORD)
-            s.sendmail(GMAIL_USER, REPORT_EMAIL, msg.as_string())
-        log(f"  ✓ Alerta enviada a {REPORT_EMAIL}")
+            s.sendmail(GMAIL_USER, recipients, msg.as_string())
+        log(f"  ✓ Alerta enviada (BCC) a {len(recipients)} destinatarios")
         db.mark_alerts_notified()
     except Exception as e:
         log(f"  [email] Error enviando alerta: {e}")
