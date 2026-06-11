@@ -284,16 +284,12 @@ def analyze_weekly(data_summary):
 
 # ── HTML del email ───────────────────────────────────────────────────────────
 
-def build_email_html(analysis_html, report_type="DIARIO"):
+def build_email_html(analysis_html, report_type="DIARIO", weekly_block=""):
     now = datetime.now()
     date_str = now.strftime("%d de %B, %Y · %H:%M")
 
-    if report_type == "SEMANAL":
-        icon   = "📅"
-        titulo = "RESUMEN SEMANAL"
-    else:
-        icon   = "🛡️"
-        titulo = "INFORME DIARIO"
+    icon   = "🛡️"
+    titulo = "INFORME DIARIO + RESUMEN SEMANAL" if weekly_block else "INFORME DIARIO"
 
     return f"""
     <html>
@@ -342,6 +338,14 @@ def build_email_html(analysis_html, report_type="DIARIO"):
           La Prensa · La Tribuna · HRN · Radio América · Cadena Voces</b>
         </div>
         {analysis_html}
+        {f'''
+        <hr style="margin:32px 0;border:none;border-top:3px solid #1a3a6b">
+        <div style="background:#1a3a6b;color:#fff;padding:12px 16px;border-radius:6px;margin-bottom:20px">
+          <span style="font-size:22px">📅</span>
+          <strong style="font-size:16px;margin-left:8px">RESUMEN SEMANAL</strong>
+        </div>
+        {weekly_block}
+        ''' if weekly_block else ''}
       </div>
 
       <p style="color:#aaa;font-size:11px;text-align:center;margin-top:12px">
@@ -408,31 +412,31 @@ def main():
         data_summary  = build_data_summary(posts, news, period="day")
         analysis_html = analyze_daily(data_summary)
 
-        email_html = build_email_html(analysis_html, report_type="DIARIO")
+        # ── Los viernes noche (sábado UTC) incluir resumen semanal en el mismo correo
+        weekly_block = ""
+        if is_saturday:
+            log("→ Es viernes noche HN (sábado UTC) — adjuntando resumen semanal…")
+            week_posts = db.get_week_posts()
+            week_news  = db.get_week_news()
+            log(f"   {len(week_posts)} posts · {len(week_news)} noticias (semana)")
+            if week_posts or week_news:
+                data_week    = build_data_summary(week_posts, week_news, period="week")
+                weekly_block = analyze_weekly(data_week)
+
+        email_html = build_email_html(analysis_html, report_type="DIARIO",
+                                      weekly_block=weekly_block)
         save_local_report(email_html, report_type="diario")
 
-        subject = f"🛡️ CENTINELA — {now.strftime('%A %d/%m/%Y')} · Informe Diario"
-        log("→ Enviando informe diario…")
+        if is_saturday:
+            week_start = (now - timedelta(days=6)).strftime("%d/%m")
+            subject = f"🛡️ CENTINELA — {now.strftime('%A %d/%m/%Y')} · Diario + Resumen Semanal {week_start}–{now.strftime('%d/%m')}"
+        else:
+            subject = f"🛡️ CENTINELA — {now.strftime('%A %d/%m/%Y')} · Informe Diario"
+
+        log("→ Enviando informe…")
         send_email(email_html, subject)
     else:
         log("  ⚠️  Sin datos para informe diario (¿collect.py corrió?)")
-
-    # ── Resumen semanal (solo sábados) ────────────────────────────────────
-    if is_saturday:
-        log("→ Es sábado — generando resumen semanal…")
-        week_posts = db.get_week_posts()
-        week_news  = db.get_week_news()
-        log(f"   {len(week_posts)} posts · {len(week_news)} noticias (semana)")
-
-        if week_posts or week_news:
-            data_week    = build_data_summary(week_posts, week_news, period="week")
-            weekly_html  = analyze_weekly(data_week)
-            email_weekly = build_email_html(weekly_html, report_type="SEMANAL")
-            save_local_report(email_weekly, report_type="semanal")
-
-            week_start = (now - timedelta(days=6)).strftime("%d/%m")
-            subject_w  = f"📅 CENTINELA — Resumen Semanal {week_start}–{now.strftime('%d/%m/%Y')}"
-            send_email(email_weekly, subject_w)
 
     log("✓ Entrega completa")
     log("=" * 60)
