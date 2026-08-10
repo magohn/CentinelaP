@@ -266,9 +266,7 @@ else:
 
 REPORT_EMAIL = [
     "max.gonzaleshn@gmail.com",
-    "kodath@gmail.com",
     "olret24@hotmail.com",
-    "alefrico@gmail.com",
 ]
 SENDER_NAME  = "🛡️ CENTINELA"
 
