@@ -53,6 +53,15 @@ POLITICAL_ACTORS = {
         "facebook":  None,
         "tiktok":    "jrburbara",
     },
+    "Luis Castro": {
+        "rol":       "Secretario Privado de la Presidencia",
+        "partido":   "Partido Nacional",
+        "categoria": "OFICIALISMO",
+        "twitter":   "Lcastro30",
+        "instagram": None,
+        "facebook":  None,
+        "tiktok":    None,
+    },
 
     # ── OPOSICIÓN (Partido Libre) ──────────────────────────────────────────
     "Xiomara Castro": {
