@@ -435,6 +435,7 @@ def main():
 
         log("→ Enviando informe…")
         send_email(email_html, subject)
+        db.mark_alerts_notified()
     else:
         log("  ⚠️  Sin datos para informe diario (¿collect.py corrió?)")
 
