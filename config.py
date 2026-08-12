@@ -274,6 +274,7 @@ else:
     LOG_PATH    = os.path.join(BASE_DIR, "sentinela.log")
 
 REPORT_EMAIL = [
+    "cristian.cousin@gmail.com",
     "maxgonzales1981@gmail.com",
 ]
 SENDER_NAME  = "🛡️ CENTINELA"
