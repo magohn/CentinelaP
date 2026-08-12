@@ -384,9 +384,7 @@ def send_email(html, subject):
     msg["To"]      = ", ".join(recipients)
     msg.attach(MIMEText(html, "html"))
 
-    with smtplib.SMTP("smtp.office365.com", 587) as s:
-        s.ehlo()
-        s.starttls()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465) as s:
         s.login(GMAIL_USER, GMAIL_APP_PASSWORD)
         s.sendmail(GMAIL_USER, recipients, msg.as_string())
     log(f"  ✓ Email enviado a {len(recipients)} destinatarios")
