@@ -273,10 +273,7 @@ else:
     ENV_PATH    = os.path.expanduser("~/social_monitor/.env")
     LOG_PATH    = os.path.join(BASE_DIR, "sentinela.log")
 
-REPORT_EMAIL = [
-    "cristian.cousin@gmail.com",
-    "maxgonzales1981@gmail.com",
-]
+REPORT_EMAIL = ["maxgonzales1981@gmail.com"]
 SENDER_NAME  = "🛡️ CENTINELA"
 
 # Horario de recolección (horas de inicio)
